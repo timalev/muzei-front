@@ -1,0 +1,8 @@
+{
+  "name": "muzei_front",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite",
+  "id": "9302dc37"
+}
