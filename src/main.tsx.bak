@@ -2,6 +2,21 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App';
 
+function SignOut(event){
+
+	 
+const auth = getAuth();
+
+   auth.signOut().then(function() {
+    console.log('Signed Out');
+    window.location.reload();
+
+    },
+    function(error) {
+    console.error('Sign Out Error', error);
+  });
+}
+
 
 const container = document.getElementById('root');
 const root = createRoot(container!);

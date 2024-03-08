@@ -98,7 +98,7 @@ axios.get("http://localhost:3000/getstatus?user=" + user).then((response) => {
 
 		if (response.data[0])
 		{
-			// console.log(response.data[0].statususer);
+			console.log(response.data[0].statususer);
 
 
 			setMenuUsr(response.data[0].statususer);
@@ -111,7 +111,7 @@ axios.get("http://localhost:3000/getstatus?user=" + user).then((response) => {
 		 
 	   });
 
-// console.log(status);
+console.log(status);
 
 
 	

@@ -187,7 +187,7 @@ componentDidMount() {
 	axios.get("http://localhost:3000/getstatus?user=" + user.uid).then(response => { 
 
 
-		//console.log(user.uid);
+		console.log(user.uid);
 
         this.setState({statusUser: response.data[0].statususer });
 	

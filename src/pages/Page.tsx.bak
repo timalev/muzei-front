@@ -46,11 +46,6 @@ else if (name=="reg")
       </IonContent>
     </IonPage>
   );
-
-
-
-
-
 };
 
 export default Page;
