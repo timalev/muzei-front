@@ -211,7 +211,7 @@ if (user )
 <table style={{backgroundImage: `url("http://localhost:3000/src/uploads/${muzPho}")`}}  width="100%" height="500px">
 <tbody>
 <tr><td valign="top"> 
-<br/><div style={{background: 'white', width: '50%', padding: '20px', marginLeft: '20px'}}>				
+<br/><div style={{background: 'gray', width: '50%', padding: '20px', marginLeft: '20px'}}>				
 {muzDesc}
 </div>
 </td></tr>

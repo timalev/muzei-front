@@ -172,6 +172,13 @@ componentDidMount() {
 	  })
 		.catch(error => {console.log ("Error sending POST request", error)});
 	 }
+  
+  /*
+  	axios.get("http://localhost:3000/testapi").then(response => { 
+		console.log(response);
+	  })
+		.catch(error => {console.log ("Error sending POST request", error)});
+	 */
 
 
 
