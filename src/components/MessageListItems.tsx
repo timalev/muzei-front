@@ -23,7 +23,11 @@ const MessageListItem: React.FC<MessageListItemProps> = ({ message }) => {
         </h2>
         <h3 >{message.names}</h3>
         <p>
-         {message.descr}
+         {
+
+message.descr.substring(0, 50)
+
+}
         </p>
       </IonLabel>
     </IonItem>

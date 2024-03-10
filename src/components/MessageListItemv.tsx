@@ -18,7 +18,7 @@ const MessageListItem: React.FC<MessageListItemProps> = ({ message }) => {
         <h2>
           {message.fromName}
           <span className="date">
-            <IonNote>&nbsp;&nbsp;&nbsp;<a href={`/vistavki/?idv=${message.id}`}>ред</a>&nbsp;&nbsp;<a href={`/vistavkilist/?dv=${message.id}`}>удал</a></IonNote>
+            <IonNote>&nbsp;&nbsp;&nbsp;<a href={`/vistavki/?idv=${message.id}`}>редактировать</a>&nbsp;&nbsp;<a href={`/vistavkilist/?dv=${message.id}`}>удалить</a></IonNote>
           </span>
         </h2>
         <h3 >&nbsp;&nbsp;&nbsp; {message.names}</h3>

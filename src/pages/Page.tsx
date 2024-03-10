@@ -14,7 +14,7 @@ let title = name;
 
 if (name=="muzei")
 {
-	  title = "Музеи";
+	  title = "Создание нового музея";
 }
 else if (name=="auth")
 {
@@ -24,6 +24,25 @@ else if (name=="reg")
 {
 	title = "Регистрация";
 }
+	else if (name=="muzeilist")
+{
+	title = "Управление контентом музеев";
+}
+		else if (name=="vistavkilist")
+{
+	title = "Управление контентом выставок";
+}
+	else if (name=="vistavki")
+{
+	title = "Создание новой выставки";
+}
+		else if (name=="selectmuz")
+{
+	title = "Выбор музея";
+}
+	
+
+	
 
   return (
     <IonPage>

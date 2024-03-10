@@ -13,6 +13,7 @@ import {
 import React, { useState,useEffect } from 'react';
 import { initializeApp } from 'firebase/app';
 import axios from "axios";
+import { Plugins, Capacitor } from '@capacitor/core'
 
 
 const firebaseConfig = {
@@ -69,7 +70,7 @@ const Menu: React.FC = () => {
 
 
 	const [user, setUser] = useState(null);
-	const [status, setStatus] = useState(null);
+	const [status, setStatus] = useState("определяется..");
 
 	const [menuUsr, setMenuUsr] = useState(true);
 	const [menuAdm, setMenuAdm] = useState(true);
@@ -81,7 +82,7 @@ const Menu: React.FC = () => {
 		
 		onAuthStateChanged(auth, (user) => {
 			if (user) {
-				setUser(user.uid);
+				setUser(user.email);
 				} 
 		});
 
@@ -91,7 +92,8 @@ const Menu: React.FC = () => {
 	}, []);
 
 
-
+	
+	
 axios.get("http://localhost:3000/getstatus?user=" + user).then((response) => {
 
 		//console.log(response.data[0].types);
@@ -103,9 +105,7 @@ axios.get("http://localhost:3000/getstatus?user=" + user).then((response) => {
 
 			setMenuUsr(response.data[0].statususer);
 			setMenuAdm(response.data[0].statusadmin);
-		
-
-		    //setStatus(response.data[0].types);
+		    setStatus(response.data[0].status);
 		}
 
 		 
@@ -149,21 +149,14 @@ const appPages: AppPage[] = [
 ];
 
 
-//console.log(status);
-
-	
 	const location = useLocation();
-	
-	
-
-//console.log(status);
 
   return (
     <IonMenu contentId="main" type="overlay">
       <IonContent>
         <IonList id="inbox-list">
-          <IonListHeader>Inbox</IonListHeader>
-          <IonNote>Меню</IonNote>
+          <IonListHeader>Конструктор сайтов</IonListHeader>
+          <IonNote>Статус: {status}</IonNote>
           {appPages.map((appPage, index) => {
 
 	  

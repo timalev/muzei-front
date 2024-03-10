@@ -44,6 +44,8 @@ class ExploreContainer extends React.Component {
 	    dataList: [],
 		dataListv: [],
 		updList: [],
+    muzList: [],
+    muzListFil: [],
 		saveStr: ''
 		};  
   }
@@ -72,6 +74,13 @@ handleUpdChange = (e) => {
 
 handleDescrVisChange = (e) => {
 	this.setState({ descrVisValue: e.target.value });
+}
+  
+handleSearchMuz = (e) => {
+  
+const filtered = this.state.muzList.filter(entry => Object.values(entry).some(val => typeof val === "string" && val.includes(e.target.value)));
+this.setState({ muzListFil: filtered });  
+
 }
 
 handleDescrChange = (e) => {
@@ -173,27 +182,32 @@ componentDidMount() {
 
 
 
-    fetch("http://localhost:3000/getmuzei?user=" + user.uid)
+    fetch("http://localhost:3000/getmuzei?user=" + user.email)
       .then((response) => response.json())
       .then((data) => this.setState({ dataList: data }));
+     
+     
+    fetch("http://localhost:3000/getallmuzei")
+      .then((response) => response.json())
+      .then((data) => this.setState({ muzList: data , muzListFil: data }));
 
     
 
-    fetch("http://localhost:3000/getvistavki?user=" + user.uid)
+    fetch("http://localhost:3000/getvistavki?user=" + user.email)
       .then((response) => response.json())
       .then((data) => this.setState({ dataListv: data }));
 
 
-	axios.get("http://localhost:3000/getstatus?user=" + user.uid).then(response => { 
+	axios.get("http://localhost:3000/getstatus?user=" + user.email).then(response => { 
 
 
-		//console.log(user.uid);
+		//console.log(user.email);
 
         this.setState({statusUser: response.data[0].statususer });
 	
 		
 		
-		 console.log(response.data[0].statususer);
+		// console.log(response.data[0].statususer);
 			
 	})
 		.catch(error => {console.log ("Error sending POST request", error)});
@@ -219,7 +233,7 @@ authListener() {
    if (user) {
 
 
-    this.setState({ user: user.uid });
+    this.setState({ user: user.email });
     
    } else {
     this.setState({ user: null });
@@ -270,15 +284,9 @@ if (this.name=="muzei")
 		  <label> {this.state.saveStr}<br /><br />
 	
 	  <input type="hidden"  value={this.state.updValue} onChange={this.handleUpdChange} size="5" />
-
-
 	  Название музея:<br />
 	  	  
-	  <input type="text"  value={this.state.inputValue} onChange={this.handleInputChange} size="50" />
-
-		  
-
-	      </label>
+	  <input type="text"  value={this.state.inputValue} onChange={this.handleInputChange} size="50" /></label>
 
 
 		   <label> <br /><br />
@@ -294,7 +302,7 @@ if (this.name=="muzei")
 	      </label>
 
 		  <br /><br /><label>
-          <button type="submit" >Отправить</button></label>
+          <button type="submit" className="button button1">Сохранить</button></label>
 
 
 			    <br /><br />
@@ -373,7 +381,7 @@ if (this.name=="vistavki")
 	      </label>
 
 		  <br /><br /><label>
-          <button type="submit" >Отправить</button>
+          <button type="submit" className="button button1">Сохранить</button>
 		  
 		  
 		
@@ -401,45 +409,34 @@ else if (this.name=="auth")
 	
 
 
-if (this.state.user) {
+if (!this.state.user) {
 
-	//console.log(this.state.user);
-
- return (
-	 <label>
-	<br /><br /><div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Вы авторизованы!</div><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button onClick={() => this.SignOut()}>
-      Выход
-    </button>
-	 </label>
-)
-	// console.log(this.state.user);
+	console.log(this.state.user);
+   return (
+	     <form  onSubmit={this.SignIn} >
+	       <br /><br />
+           <label>
+                 &nbsp;&nbsp;Логин:&nbsp;&nbsp;
+                <input type="text" name="login" />
+               </label><br /><br />
+	              <label>
+             &nbsp;&nbsp;Пароль:
+                <input type="text" name="password" />
+              </label><br /><br />
+	               <label>
+                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  <a href="/reg" >Регистрация</a>
+               </label><br /><br />&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; <input type="submit" value="Войти" />
+                </form>
+	        )
+     }
+     return (
+	       <label>
+	              <br /><br /><div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Вы авторизованы!</div><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button className="button button1" onClick={() => this.SignOut()}>
+                Выход
+              </button>
+	           </label>
+          )
 	
-
- }else
-	{
-
-	
-  return (
-	  <form  onSubmit={this.SignIn} >
-	  <br /><br /><br /><br />
-  <label>
-    &nbsp;&nbsp;Логин:&nbsp;&nbsp;&nbsp;
-    <input type="text" name="login" />
-  </label><br /><br />
-	   <label>
-    &nbsp;&nbsp;Пароль:
-    <input type="text" name="password" />
-  </label><br /><br />
-
-
-		
-	   <label>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  <a href="/reg" >Регистрация</a>
-  </label><br /><br />&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; <input type="submit" value="Отправить" />
- </form>
-	  )
-
-	}
 }	
 	   
 else if (this.name=="reg")
@@ -447,9 +444,9 @@ else if (this.name=="reg")
 	
   return (
 	  <form  onSubmit={this.printForm} >
-	  <br /><br /><br /><br />
+	  <br /><br /> 
   <label>
-    &nbsp;&nbsp;Логин:&nbsp;&nbsp;&nbsp;
+    &nbsp;Логин:&nbsp;&nbsp;&nbsp;
     <input type="text" name="login" />
   </label><br /><br />
 	   <label>
@@ -459,15 +456,15 @@ else if (this.name=="reg")
 
 	   <label>
   &nbsp;&nbsp;Права:
-     &nbsp;&nbsp;  <select name="type"   >
+     &nbsp;<select name="type"   >
 		
-            <option value="admin">Администратор</option>
-            <option value="user">Пользователь</option>
+            <option value="администратор">Администратор</option>
+            <option value="пользователь">Пользователь</option>
     
           </select>
   </label><br /><br />
 
-		 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;<input type="submit" value="Отправить" />
+		 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;<input className="button button1" type="submit" value="Войти" />
  </form>
 	  )
 }	  
@@ -475,18 +472,10 @@ else if (this.name=="reg")
 
 else if (this.name=="muzeilist")
 {
+  
+ if (this.state.dataList.length==0) return (<div><br />&nbsp;&nbsp;Музеи еще не созданы</div>)
   return (
-	   /*
-   <div>
-	  <h1>list</h1>
-	  <ul>
-	      {
-	  this.state.dataList.map(item => (<li key={item.id}>{item.names}</li>))
-	  }
-	  
-	  </ul>
-	  </div>
- */
+
 
  <IonPage id="home-page">
       <IonHeader>
@@ -516,19 +505,16 @@ else if (this.name=="muzeilist")
 }
 else if (this.name=="selectmuz")
 {
-  return (
-	   /*
-   <div>
-	  <h1>list</h1>
-	  <ul>
-	      {
-	  this.state.dataList.map(item => (<li key={item.id}>{item.names}</li>))
-	  }
-	  
-	  </ul>
-	  </div>
- */
+ // console.log(this.state.muzList);
+  
+  
 
+  
+  
+  return (
+
+
+    
  <IonPage id="home-page">
       <IonHeader>
         <IonToolbar>
@@ -537,7 +523,8 @@ else if (this.name=="selectmuz")
       </IonHeader>
       <IonContent fullscreen>
        <br/>
-	{this.state.saveStr}
+&nbsp;&nbsp;Поиск: <input type="text" onChange={this.handleSearchMuz}/> 
+
         <IonHeader collapse="condense">
           <IonToolbar>
             <IonTitle size="large">
@@ -547,7 +534,11 @@ else if (this.name=="selectmuz")
         </IonHeader>
 
         <IonList>
-          {this.state.dataList.map(m => <MessageListItems key={m.id} message={m} />)}
+          {
+              
+              this.state.muzListFil.map(m => <MessageListItems key={m.id} message={m} />)
+
+}
         </IonList>
       </IonContent>
     </IonPage>
@@ -559,7 +550,7 @@ else if (this.name=="selectmuz")
 else if (this.name=="vistavkilist")
 {
 
-
+if (this.state.dataListv.length==0) return (<div><br />&nbsp;&nbsp;Выставки еще не созданы</div>)
 
   return (
   
@@ -757,7 +748,7 @@ printForm = (event) => {
  event.preventDefault();
 
 
- console.log(event.target.login.value + " / " + event.target.password.value + " / " + event.target.type.value);
+ //console.log(event.target.login.value + " / " + event.target.password.value + " / " + event.target.type.value);
 
 const auth = getAuth();
 
@@ -768,7 +759,7 @@ const auth = getAuth();
     // Signed in
     const user = userCredential.user;
 
-    const uid = user.uid;
+    const uid = user.email;
 
     console.log(user);
 

@@ -81,7 +81,7 @@ const auth = getAuth();
 
    onAuthStateChanged(auth, (user) => {
    if (user) {
-	   setUser(user.uid);
+	   setUser(user.email);
       } 
   });
 
@@ -178,6 +178,9 @@ if (user )
             </div>
           </>
         ) : (
+			
+
+			
               <IonItem>
               
               <IonLabel className="ion-text-wrap">
@@ -185,6 +188,8 @@ if (user )
 				
                 <center><h3 >
                {
+				
+
 						 vist.map((item, index, arr )=> 
 	 
  ( 
@@ -199,15 +204,25 @@ if (user )
 }
                 </h3></center>
 
-	
         <div className="ion-padding">
               <h1>{muzTit}</h1>
 
-				 <img src={`http://localhost:3000/src/uploads/${muzPho}`} style={{width:'100%'}} />
-              <p>
-	{muzDesc}
-              </p>
+
+<table style={{backgroundImage: `url("http://localhost:3000/src/uploads/${muzPho}")`}}  width="100%" height="500px">
+<tbody>
+<tr><td valign="top"> 
+<br/><div style={{background: 'white', width: '50%', padding: '20px', marginLeft: '20px'}}>				
+{muzDesc}
+</div>
+</td></tr>
+
+</tbody>
+</table>
+
+<center><br/>Все права защищены 2024</center>
+           
             </div>
+
               </IonLabel>
             </IonItem>
 
